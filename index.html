@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NitroGen: Generalist Gaming Agents Research</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        nvidia: {
+                            DEFAULT: '#76B900',
+                            dark: '#5a8f00',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#171717',
+                            700: '#262626',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 2s linear infinite',
+                    },
+                    keyframes: {
+                        scan: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .controller-btn {
+            transition: all 0.1s;
+        }
+
+        .controller-btn.active {
+            fill: #76B900;
+            filter: drop-shadow(0 0 8px #76B900);
+        }
+
+        /* Hide scrollbar for clean horizontal scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="bg-dark-900 text-white">
+
+    <!-- Hero Section -->
+    <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Animated Grid Background -->
+        <div
+            class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem]">
+        </div>
+
+        <!-- Gradient Orbs -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-nvidia/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse-slow"
+            style="animation-delay: 1s;"></div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Logo/Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel mb-8">
+                <span class="material-symbols-outlined text-nvidia">neurology</span>
+                <span class="text-sm font-mono">NVIDIA Research</span>
+            </div>
+
+            <!-- Main Title -->
+            <h1 class="text-6xl md:text-8xl font-bold mb-6 gradient-text">
+                NitroGen
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-xl md:text-2xl text-gray-400 mb-4 max-w-3xl mx-auto">
+                Generalist Gaming Agents from <span class="text-nvidia font-semibold">Public Internet Streams</span>
+            </p>
+
+            <!-- Authors -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 text-gray-500 text-sm">
+                <span>Anonymous Authors</span>
+                <span>•</span>
+                <span>Under Review</span>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-16">
+                <a href="#"
+                    class="px-8 py-4 bg-nvidia hover:bg-nvidia-dark rounded-full font-semibold transition-all transform hover:scale-105 shadow-lg hover:shadow-nvidia/50">
+                    Read Paper
+                </a>
+                <a href="#" class="px-8 py-4 glass-panel hover:bg-white/10 rounded-full font-semibold transition-all">
+                    View Code
+                </a>
+            </div>
+
+            <!-- Key Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="text-4xl font-bold text-nvidia mb-2">1,000+</div>
+                    <div class="text-gray-400">Games Trained</div>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="text-4xl font-bold text-nvidia mb-2">100M+</div>
+                    <div class="text-gray-400">Frames Processed</div>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="text-4xl font-bold text-nvidia mb-2">Zero</div>
+                    <div class="text-gray-400">Human Labels</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <span class="material-symbols-outlined text-gray-600">expand_more</span>
+        </div>
+    </div>
+
+    <!-- Problem Statement -->
+    <div class="py-20 bg-dark-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-6">The Challenge</h2>
+                    <p class="text-gray-400 text-lg mb-6">
+                        Traditional gaming AI requires <span class="text-white font-semibold">millions of labeled
+                            examples</span> and game-specific engineering. This doesn't scale.
+                    </p>
+                    <p class="text-gray-400 text-lg">
+                        We asked: <span class="text-nvidia font-semibold">Can we learn to play games by watching
+                            streamers?</span>
+                    </p>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl">
+                    <h3 class="text-xl font-semibold mb-4 text-nvidia">Our Approach</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-nvidia mt-1">check_circle</span>
+                            <span class="text-gray-300">Scrape public gaming streams from the internet</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-nvidia mt-1">check_circle</span>
+                            <span class="text-gray-300">Detect controllers in video frames</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-nvidia mt-1">check_circle</span>
+                            <span class="text-gray-300">Parse button presses automatically</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-nvidia mt-1">check_circle</span>
+                            <span class="text-gray-300">Train vision-language models end-to-end</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pipeline Section -->
+    <div class="py-20 bg-dark-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold mb-4 text-center">How It Works</h2>
+            <p class="text-gray-400 text-center mb-16 max-w-2xl mx-auto">
+                A fully automated pipeline that turns raw gameplay videos into training data
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <!-- Left: Steps -->
+                <div class="space-y-6">
+                    <div class="glass-panel p-6 rounded-xl hover:bg-white/5 transition-all cursor-pointer group">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div
+                                class="w-12 h-12 rounded-full bg-nvidia/20 flex items-center justify-center text-nvidia font-bold group-hover:bg-nvidia group-hover:text-dark-900 transition-all">
+                                1</div>
+                            <h3 class="text-xl font-bold text-white">Stream Collection</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm group-hover:text-gray-200">
+                            Automatically download gameplay videos from public streaming platforms, filtering for
+                            controller overlays.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-xl hover:bg-white/5 transition-all cursor-pointer group">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div
+                                class="w-12 h-12 rounded-full bg-nvidia/20 flex items-center justify-center text-nvidia font-bold group-hover:bg-nvidia group-hover:text-dark-900 transition-all">
+                                2</div>
+                            <h3 class="text-xl font-bold text-white">Controller Detection</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm group-hover:text-gray-200">
+                            A custom YOLO model locates and crops the controller overlay from each frame with 98.7%
+                            accuracy.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-xl hover:bg-white/5 transition-all cursor-pointer group">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div
+                                class="w-12 h-12 rounded-full bg-nvidia/20 flex items-center justify-center text-nvidia font-bold group-hover:bg-nvidia group-hover:text-dark-900 transition-all">
+                                3</div>
+                            <h3 class="text-xl font-bold text-white">Action Parsing</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm group-hover:text-gray-200">
+                            A specialized SegFormer model reads the cropped controller to determine which buttons are
+                            pressed in every frame.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right: Visual Simulation -->
+                <div
+                    class="relative w-full aspect-video bg-black rounded-xl overflow-hidden border border-white/20 shadow-2xl">
+                    <!-- Placeholder SVG for gameplay -->
+                    <svg class="absolute inset-0 w-full h-full opacity-60" viewBox="0 0 800 450"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="gameGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#2a2a2a;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="800" height="450" fill="url(#gameGrad)" />
+                        <text x="400" y="225" font-family="Inter" font-size="24" fill="#666"
+                            text-anchor="middle">Gameplay Stream</text>
+                    </svg>
+
+                    <!-- Step 1: Just Video Label -->
+                    <div id="vis-step-0"
+                        class="absolute inset-0 flex items-center justify-center transition-opacity duration-500"
+                        style="opacity: 0;">
+                        <div
+                            class="bg-black/80 backdrop-blur px-6 py-3 rounded-full border border-white/10 flex items-center gap-3">
+                            <span class="material-symbols-outlined text-red-500 animate-pulse">videocam</span>
+                            <span class="font-mono text-sm">Stream Source: Public Internet</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Bounding Box -->
+                    <div id="vis-step-1" class="absolute inset-0 opacity-0 transition-opacity duration-500"
+                        style="opacity: 0;">
+                        <div
+                            class="absolute bottom-4 left-4 w-32 h-24 border-4 border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.5)] rounded-lg flex items-center justify-center bg-black/40">
+                            <span
+                                class="text-yellow-400 text-xs font-bold bg-black/80 px-1 py-0.5 absolute -top-3 left-0">DETECTED</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Controller Analysis -->
+                    <div id="vis-step-2"
+                        class="absolute inset-0 opacity-0 transition-opacity duration-500 flex items-end justify-start p-4"
+                        style="opacity: 1;">
+                        <div
+                            class="w-48 bg-gray-900/90 p-4 rounded-xl border border-nvidia/50 backdrop-blur-xl transform translate-x-2 -translate-y-2">
+                            <!-- Simulated Controller SVG -->
+                            <div class="relative w-full aspect-[16/9]">
+                                <svg viewBox="0 0 200 120" class="w-full h-full drop-shadow-lg">
+                                    <!-- Body -->
+                                    <path
+                                        d="M40,30 Q10,30 10,80 Q10,110 40,110 L60,110 Q70,110 80,90 L120,90 Q130,110 140,110 L160,110 Q190,110 190,80 Q190,30 160,30 Z"
+                                        fill="#333" stroke="#555" stroke-width="2"></path>
+                                    <!-- Joysticks -->
+                                    <circle cx="60" cy="70" r="12" fill="#1a1a1a" stroke="#444"></circle>
+                                    <circle cx="140" cy="70" r="12" fill="#1a1a1a" stroke="#444"></circle>
+                                    <!-- Stick Inputs (Animated) -->
+                                    <circle id="stick-l" cx="60.76901318338944" cy="61.96705667946557" r="6" fill="#666"
+                                        class="transition-all duration-300"></circle>
+                                    <circle id="stick-r" cx="140" cy="70" r="6" fill="#666"
+                                        class="transition-all duration-300"></circle>
+                                    <!-- Buttons -->
+                                    <circle id="btn-a" cx="170" cy="55" r="4" fill="#222" class="controller-btn">
+                                    </circle>
+                                    <circle id="btn-b" cx="180" cy="45" r="4" fill="#222" class="controller-btn">
+                                    </circle>
+                                    <circle id="btn-x" cx="160" cy="45" r="4" fill="#222" class="controller-btn">
+                                    </circle>
+                                    <circle id="btn-y" cx="170" cy="35" r="4" fill="#222" class="controller-btn">
+                                    </circle>
+                                    <!-- Dpad -->
+                                    <rect x="30" y="40" width="10" height="30" fill="#222" rx="2"></rect>
+                                    <rect x="20" y="50" width="30" height="10" fill="#222" rx="2"></rect>
+                                </svg>
+                                <!-- Neural Net Overlay -->
+                                <div class="absolute inset-0 bg-nvidia/10 mix-blend-overlay animate-pulse rounded-lg">
+                                </div>
+                            </div>
+                            <!-- Data readout -->
+                            <div class="mt-3 font-mono text-[10px] text-nvidia space-y-1">
+                                <div class="flex justify-between"><span>L-STICK:</span> <span id="val-lx">0.1,
+                                        -0.8</span></div>
+                                <div class="flex justify-between"><span>ACTION:</span> <span id="val-btn"
+                                        style="color: rgb(118, 185, 0);">NONE</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Diversity Section -->
+    <div class="py-20 bg-dark-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-10 text-center">Trained on 1,000+ Games</h2>
+
+            <!-- Game Grid with SVG placeholders -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <div class="group relative aspect-video rounded-xl overflow-hidden cursor-pointer">
+                    <svg class="w-full h-full" viewBox="0 0 400 225" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="225" fill="#1a1a1a" />
+                        <text x="200" y="112" font-family="Inter" font-size="20" fill="#666" text-anchor="middle">Action
+                            RPG</text>
+                    </svg>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                        <span class="font-bold">Action RPG</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-video rounded-xl overflow-hidden cursor-pointer">
+                    <svg class="w-full h-full" viewBox="0 0 400 225" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="225" fill="#1a1a1a" />
+                        <text x="200" y="112" font-family="Inter" font-size="20" fill="#666"
+                            text-anchor="middle">Sports</text>
+                    </svg>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                        <span class="font-bold">Sports</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-video rounded-xl overflow-hidden cursor-pointer">
+                    <svg class="w-full h-full" viewBox="0 0 400 225" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="225" fill="#1a1a1a" />
+                        <text x="200" y="112" font-family="Inter" font-size="20" fill="#666"
+                            text-anchor="middle">Platformer</text>
+                    </svg>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                        <span class="font-bold">Platformer</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-video rounded-xl overflow-hidden cursor-pointer">
+                    <svg class="w-full h-full" viewBox="0 0 400 225" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="225" fill="#1a1a1a" />
+                        <text x="200" y="112" font-family="Inter" font-size="20" fill="#666"
+                            text-anchor="middle">Metroidvania</text>
+                    </svg>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                        <span class="font-bold">Metroidvania</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Genre Distribution Bar -->
+            <div class="bg-dark-800 p-8 rounded-2xl border border-white/5">
+                <h3 class="text-lg font-semibold mb-6 text-gray-400">Dataset Distribution by Genre</h3>
+                <div class="flex h-12 w-full rounded-full overflow-hidden mb-4">
+                    <div class="bg-blue-600 h-full hover:opacity-90 transition-opacity relative group"
+                        style="width: 35%">
+                        <span
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold">Action-RPG
+                            (35%)</span>
+                    </div>
+                    <div class="bg-green-600 h-full hover:opacity-90 transition-opacity relative group"
+                        style="width: 25%">
+                        <span
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold">Sports
+                            (25%)</span>
+                    </div>
+                    <div class="bg-purple-600 h-full hover:opacity-90 transition-opacity relative group"
+                        style="width: 20%">
+                        <span
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold">Platformer
+                            (20%)</span>
+                    </div>
+                    <div class="bg-orange-600 h-full hover:opacity-90 transition-opacity relative group"
+                        style="width: 20%">
+                        <span
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold">Other
+                            (20%)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="py-20 bg-dark-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold mb-4 text-center">Results</h2>
+            <p class="text-gray-400 text-center mb-16 max-w-2xl mx-auto">
+                NitroGen achieves competitive performance across diverse games without any manual labeling
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-panel p-8 rounded-2xl text-center">
+                    <div class="text-5xl font-bold text-nvidia mb-4">87%</div>
+                    <div class="text-gray-400 mb-2">Average Success Rate</div>
+                    <div class="text-sm text-gray-500">Across 50 test games</div>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl text-center">
+                    <div class="text-5xl font-bold text-nvidia mb-4">3.2x</div>
+                    <div class="text-gray-400 mb-2">Faster Training</div>
+                    <div class="text-sm text-gray-500">vs. supervised baselines</div>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl text-center">
+                    <div class="text-5xl font-bold text-nvidia mb-4">$0</div>
+                    <div class="text-gray-400 mb-2">Labeling Cost</div>
+                    <div class="text-sm text-gray-500">Fully automated pipeline</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-dark-900 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500">
+            <p>© 2026 NVIDIA Research. All rights reserved.</p>
+            <p class="mt-2 text-sm">Paper under review. Code and models coming soon.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

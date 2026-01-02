@@ -1,0 +1,2410 @@
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NitroGen: Generalist Gaming Agents Research</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        nvidia: {
+                            DEFAULT: '#76B900',
+                            dark: '#5a8f00',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#171717',
+                            700: '#262626',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 2s linear infinite',
+                    },
+                    keyframes: {
+                        scan: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .controller-btn {
+            transition: all 0.1s;
+        }
+
+        .controller-btn.active {
+            fill: #76B900;
+            filter: drop-shadow(0 0 8px #76B900);
+        }
+
+        /* Hide scrollbar for clean horizontal scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <style>
+        *,
+        ::before,
+        ::after {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style:
+        }
+
+        ::backdrop {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style:
+        }
+
+        /* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */
+        *,
+        ::after,
+        ::before {
+            box-sizing: border-box;
+            border-width: 0;
+            border-style: solid;
+            border-color: #e5e7eb
+        }
+
+        ::after,
+        ::before {
+            --tw-content: ''
+        }
+
+        :host,
+        html {
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            -moz-tab-size: 4;
+            tab-size: 4;
+            font-family: Inter, sans-serif;
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        body {
+            margin: 0;
+            line-height: inherit
+        }
+
+        hr {
+            height: 0;
+            color: inherit;
+            border-top-width: 1px
+        }
+
+        abbr:where([title]) {
+            -webkit-text-decoration: underline dotted;
+            text-decoration: underline dotted
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: inherit;
+            font-weight: inherit
+        }
+
+        a {
+            color: inherit;
+            text-decoration: inherit
+        }
+
+        b,
+        strong {
+            font-weight: bolder
+        }
+
+        code,
+        kbd,
+        pre,
+        samp {
+            font-family: JetBrains Mono, monospace;
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            font-size: 1em
+        }
+
+        small {
+            font-size: 80%
+        }
+
+        sub,
+        sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline
+        }
+
+        sub {
+            bottom: -.25em
+        }
+
+        sup {
+            top: -.5em
+        }
+
+        table {
+            text-indent: 0;
+            border-color: inherit;
+            border-collapse: collapse
+        }
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            font-family: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+            font-size: 100%;
+            font-weight: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            color: inherit;
+            margin: 0;
+            padding: 0
+        }
+
+        button,
+        select {
+            text-transform: none
+        }
+
+        button,
+        input:where([type=button]),
+        input:where([type=reset]),
+        input:where([type=submit]) {
+            -webkit-appearance: button;
+            background-color: transparent;
+            background-image: none
+        }
+
+        :-moz-focusring {
+            outline: auto
+        }
+
+        :-moz-ui-invalid {
+            box-shadow: none
+        }
+
+        progress {
+            vertical-align: baseline
+        }
+
+        ::-webkit-inner-spin-button,
+        ::-webkit-outer-spin-button {
+            height: auto
+        }
+
+        [type=search] {
+            -webkit-appearance: textfield;
+            outline-offset: -2px
+        }
+
+        ::-webkit-search-decoration {
+            -webkit-appearance: none
+        }
+
+        ::-webkit-file-upload-button {
+            -webkit-appearance: button;
+            font: inherit
+        }
+
+        summary {
+            display: list-item
+        }
+
+        blockquote,
+        dd,
+        dl,
+        figure,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        hr,
+        p,
+        pre {
+            margin: 0
+        }
+
+        fieldset {
+            margin: 0;
+            padding: 0
+        }
+
+        legend {
+            padding: 0
+        }
+
+        menu,
+        ol,
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0
+        }
+
+        dialog {
+            padding: 0
+        }
+
+        textarea {
+            resize: vertical
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            opacity: 1;
+            color: #9ca3af
+        }
+
+        [role=button],
+        button {
+            cursor: pointer
+        }
+
+        :disabled {
+            cursor: default
+        }
+
+        audio,
+        canvas,
+        embed,
+        iframe,
+        img,
+        object,
+        svg,
+        video {
+            display: block;
+            vertical-align: middle
+        }
+
+        img,
+        video {
+            max-width: 100%;
+            height: auto
+        }
+
+        [hidden]:where(:not([hidden=until-found])) {
+            display: none
+        }
+
+        .pointer-events-none {
+            pointer-events: none
+        }
+
+        .fixed {
+            position: fixed
+        }
+
+        .absolute {
+            position: absolute
+        }
+
+        .relative {
+            position: relative
+        }
+
+        .inset-0 {
+            inset: 0px
+        }
+
+        .-top-3 {
+            top: -0.75rem
+        }
+
+        .bottom-2 {
+            bottom: 0.5rem
+        }
+
+        .bottom-20 {
+            bottom: 5rem
+        }
+
+        .bottom-4 {
+            bottom: 1rem
+        }
+
+        .bottom-full {
+            bottom: 100%
+        }
+
+        .left-0 {
+            left: 0px
+        }
+
+        .left-1\/2 {
+            left: 50%
+        }
+
+        .left-10 {
+            left: 2.5rem
+        }
+
+        .left-4 {
+            left: 1rem
+        }
+
+        .right-10 {
+            right: 2.5rem
+        }
+
+        .right-2 {
+            right: 0.5rem
+        }
+
+        .top-0 {
+            top: 0px
+        }
+
+        .top-1\/2 {
+            top: 50%
+        }
+
+        .top-2 {
+            top: 0.5rem
+        }
+
+        .top-20 {
+            top: 5rem
+        }
+
+        .z-0 {
+            z-index: 0
+        }
+
+        .z-10 {
+            z-index: 10
+        }
+
+        .z-50 {
+            z-index: 50
+        }
+
+        .-mx-4 {
+            margin-left: -1rem;
+            margin-right: -1rem
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto
+        }
+
+        .mb-1 {
+            margin-bottom: 0.25rem
+        }
+
+        .mb-10 {
+            margin-bottom: 2.5rem
+        }
+
+        .mb-12 {
+            margin-bottom: 3rem
+        }
+
+        .mb-16 {
+            margin-bottom: 4rem
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem
+        }
+
+        .mb-6 {
+            margin-bottom: 1.5rem
+        }
+
+        .ml-1 {
+            margin-left: 0.25rem
+        }
+
+        .ml-10 {
+            margin-left: 2.5rem
+        }
+
+        .mt-1 {
+            margin-top: 0.25rem
+        }
+
+        .mt-10 {
+            margin-top: 2.5rem
+        }
+
+        .mt-16 {
+            margin-top: 4rem
+        }
+
+        .mt-2 {
+            margin-top: 0.5rem
+        }
+
+        .mt-20 {
+            margin-top: 5rem
+        }
+
+        .mt-3 {
+            margin-top: 0.75rem
+        }
+
+        .mt-4 {
+            margin-top: 1rem
+        }
+
+        .mt-6 {
+            margin-top: 1.5rem
+        }
+
+        .flex {
+            display: flex
+        }
+
+        .inline-flex {
+            display: inline-flex
+        }
+
+        .grid {
+            display: grid
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .aspect-\[16\/9\] {
+            aspect-ratio: 16/9
+        }
+
+        .aspect-video {
+            aspect-ratio: 16 / 9
+        }
+
+        .h-12 {
+            height: 3rem
+        }
+
+        .h-16 {
+            height: 4rem
+        }
+
+        .h-2 {
+            height: 0.5rem
+        }
+
+        .h-24 {
+            height: 6rem
+        }
+
+        .h-3 {
+            height: 0.75rem
+        }
+
+        .h-32 {
+            height: 8rem
+        }
+
+        .h-8 {
+            height: 2rem
+        }
+
+        .h-96 {
+            height: 24rem
+        }
+
+        .h-\[500px\] {
+            height: 500px
+        }
+
+        .h-full {
+            height: 100%
+        }
+
+        .w-2 {
+            width: 0.5rem
+        }
+
+        .w-3 {
+            width: 0.75rem
+        }
+
+        .w-32 {
+            width: 8rem
+        }
+
+        .w-48 {
+            width: 12rem
+        }
+
+        .w-8 {
+            width: 2rem
+        }
+
+        .w-96 {
+            width: 24rem
+        }
+
+        .w-\[500px\] {
+            width: 500px
+        }
+
+        .w-full {
+            width: 100%
+        }
+
+        .max-w-2xl {
+            max-width: 42rem
+        }
+
+        .max-w-3xl {
+            max-width: 48rem
+        }
+
+        .max-w-7xl {
+            max-width: 80rem
+        }
+
+        .flex-1 {
+            flex: 1 1 0%
+        }
+
+        .shrink-0 {
+            flex-shrink: 0
+        }
+
+        .-translate-x-1\/2 {
+            --tw-translate-x: -50%;
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+        }
+
+        .-translate-y-1\/2 {
+            --tw-translate-y: -50%;
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+        }
+
+        .-translate-y-2 {
+            --tw-translate-y: -0.5rem;
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+        }
+
+        .translate-x-2 {
+            --tw-translate-x: 0.5rem;
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+        }
+
+        .rotate-90 {
+            --tw-rotate: 90deg;
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+        }
+
+        .transform {
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+        }
+
+        @keyframes pulse {
+            50% {
+                opacity: .5
+            }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite
+        }
+
+        .cursor-pointer {
+            cursor: pointer
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr))
+        }
+
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr))
+        }
+
+        .flex-col {
+            flex-direction: column
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap
+        }
+
+        .items-start {
+            align-items: flex-start
+        }
+
+        .items-end {
+            align-items: flex-end
+        }
+
+        .items-center {
+            align-items: center
+        }
+
+        .items-baseline {
+            align-items: baseline
+        }
+
+        .justify-start {
+            justify-content: flex-start
+        }
+
+        .justify-end {
+            justify-content: flex-end
+        }
+
+        .justify-center {
+            justify-content: center
+        }
+
+        .justify-between {
+            justify-content: space-between
+        }
+
+        .gap-1 {
+            gap: 0.25rem
+        }
+
+        .gap-12 {
+            gap: 3rem
+        }
+
+        .gap-2 {
+            gap: 0.5rem
+        }
+
+        .gap-3 {
+            gap: 0.75rem
+        }
+
+        .gap-4 {
+            gap: 1rem
+        }
+
+        .gap-6 {
+            gap: 1.5rem
+        }
+
+        .gap-8 {
+            gap: 2rem
+        }
+
+        .space-x-4> :not([hidden])~ :not([hidden]) {
+            --tw-space-x-reverse: 0;
+            margin-right: calc(1rem * var(--tw-space-x-reverse));
+            margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)))
+        }
+
+        .space-y-1> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.25rem * var(--tw-space-y-reverse))
+        }
+
+        .space-y-4> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(1rem * var(--tw-space-y-reverse))
+        }
+
+        .space-y-6> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(1.5rem * var(--tw-space-y-reverse))
+        }
+
+        .overflow-hidden {
+            overflow: hidden
+        }
+
+        .overflow-x-hidden {
+            overflow-x: hidden
+        }
+
+        .whitespace-nowrap {
+            white-space: nowrap
+        }
+
+        .rounded {
+            border-radius: 0.25rem
+        }
+
+        .rounded-2xl {
+            border-radius: 1rem
+        }
+
+        .rounded-full {
+            border-radius: 9999px
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem
+        }
+
+        .rounded-md {
+            border-radius: 0.375rem
+        }
+
+        .rounded-xl {
+            border-radius: 0.75rem
+        }
+
+        .border {
+            border-width: 1px
+        }
+
+        .border-4 {
+            border-width: 4px
+        }
+
+        .border-y {
+            border-top-width: 1px;
+            border-bottom-width: 1px
+        }
+
+        .border-b-0 {
+            border-bottom-width: 0px
+        }
+
+        .border-l-2 {
+            border-left-width: 2px
+        }
+
+        .border-l-4 {
+            border-left-width: 4px
+        }
+
+        .border-t {
+            border-top-width: 1px
+        }
+
+        .border-t-4 {
+            border-top-width: 4px
+        }
+
+        .border-blue-500\/20 {
+            border-color: rgb(59 130 246 / 0.2)
+        }
+
+        .border-gray-700 {
+            --tw-border-opacity: 1;
+            border-color: rgb(55 65 81 / var(--tw-border-opacity, 1))
+        }
+
+        .border-nvidia\/20 {
+            border-color: rgb(118 185 0 / 0.2)
+        }
+
+        .border-nvidia\/30 {
+            border-color: rgb(118 185 0 / 0.3)
+        }
+
+        .border-nvidia\/50 {
+            border-color: rgb(118 185 0 / 0.5)
+        }
+
+        .border-purple-500 {
+            --tw-border-opacity: 1;
+            border-color: rgb(168 85 247 / var(--tw-border-opacity, 1))
+        }
+
+        .border-white\/10 {
+            border-color: rgb(255 255 255 / 0.1)
+        }
+
+        .border-white\/20 {
+            border-color: rgb(255 255 255 / 0.2)
+        }
+
+        .border-white\/5 {
+            border-color: rgb(255 255 255 / 0.05)
+        }
+
+        .border-yellow-400 {
+            --tw-border-opacity: 1;
+            border-color: rgb(250 204 21 / var(--tw-border-opacity, 1))
+        }
+
+        .border-b-white\/5 {
+            border-bottom-color: rgb(255 255 255 / 0.05)
+        }
+
+        .border-l-purple-500 {
+            --tw-border-opacity: 1;
+            border-left-color: rgb(168 85 247 / var(--tw-border-opacity, 1))
+        }
+
+        .border-t-blue-500 {
+            --tw-border-opacity: 1;
+            border-top-color: rgb(59 130 246 / var(--tw-border-opacity, 1))
+        }
+
+        .border-t-nvidia {
+            --tw-border-opacity: 1;
+            border-top-color: rgb(118 185 0 / var(--tw-border-opacity, 1))
+        }
+
+        .bg-black {
+            --tw-bg-opacity: 1;
+            background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-black\/40 {
+            background-color: rgb(0 0 0 / 0.4)
+        }
+
+        .bg-black\/50 {
+            background-color: rgb(0 0 0 / 0.5)
+        }
+
+        .bg-black\/70 {
+            background-color: rgb(0 0 0 / 0.7)
+        }
+
+        .bg-black\/80 {
+            background-color: rgb(0 0 0 / 0.8)
+        }
+
+        .bg-blue-500 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(59 130 246 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-blue-500\/10 {
+            background-color: rgb(59 130 246 / 0.1)
+        }
+
+        .bg-blue-600 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-dark-800 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(23 23 23 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-dark-900 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(10 10 10 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-emerald-500 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-gray-600 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(75 85 99 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-gray-700 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-gray-800 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-gray-900 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-gray-900\/90 {
+            background-color: rgb(17 24 39 / 0.9)
+        }
+
+        .bg-nvidia {
+            --tw-bg-opacity: 1;
+            background-color: rgb(118 185 0 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-nvidia\/10 {
+            background-color: rgb(118 185 0 / 0.1)
+        }
+
+        .bg-nvidia\/5 {
+            background-color: rgb(118 185 0 / 0.05)
+        }
+
+        .bg-purple-500 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(168 85 247 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-purple-500\/20 {
+            background-color: rgb(168 85 247 / 0.2)
+        }
+
+        .bg-white {
+            --tw-bg-opacity: 1;
+            background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-white\/5 {
+            background-color: rgb(255 255 255 / 0.05)
+        }
+
+        .bg-yellow-500 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(234 179 8 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-gradient-to-r {
+            background-image: linear-gradient(to right, var(--tw-gradient-stops))
+        }
+
+        .bg-gradient-to-t {
+            background-image: linear-gradient(to top, var(--tw-gradient-stops))
+        }
+
+        .from-black\/80 {
+            --tw-gradient-from: rgb(0 0 0 / 0.8) var(--tw-gradient-from-position);
+            --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+        }
+
+        .from-nvidia {
+            --tw-gradient-from: #76B900 var(--tw-gradient-from-position);
+            --tw-gradient-to: rgb(118 185 0 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+        }
+
+        .via-transparent {
+            --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), transparent var(--tw-gradient-via-position), var(--tw-gradient-to)
+        }
+
+        .to-emerald-400 {
+            --tw-gradient-to: #34d399 var(--tw-gradient-to-position)
+        }
+
+        .to-transparent {
+            --tw-gradient-to: transparent var(--tw-gradient-to-position)
+        }
+
+        .bg-clip-text {
+            -webkit-background-clip: text;
+            background-clip: text
+        }
+
+        .object-cover {
+            object-fit: cover
+        }
+
+        .p-2 {
+            padding: 0.5rem
+        }
+
+        .p-4 {
+            padding: 1rem
+        }
+
+        .p-6 {
+            padding: 1.5rem
+        }
+
+        .p-8 {
+            padding: 2rem
+        }
+
+        .px-1 {
+            padding-left: 0.25rem;
+            padding-right: 0.25rem
+        }
+
+        .px-2 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem
+        }
+
+        .px-3 {
+            padding-left: 0.75rem;
+            padding-right: 0.75rem
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem
+        }
+
+        .px-6 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem
+        }
+
+        .px-8 {
+            padding-left: 2rem;
+            padding-right: 2rem
+        }
+
+        .py-0\.5 {
+            padding-top: 0.125rem;
+            padding-bottom: 0.125rem
+        }
+
+        .py-1 {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem
+        }
+
+        .py-12 {
+            padding-top: 3rem;
+            padding-bottom: 3rem
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem
+        }
+
+        .py-20 {
+            padding-top: 5rem;
+            padding-bottom: 5rem
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem
+        }
+
+        .pb-20 {
+            padding-bottom: 5rem
+        }
+
+        .pl-4 {
+            padding-left: 1rem
+        }
+
+        .pt-10 {
+            padding-top: 2.5rem
+        }
+
+        .pt-32 {
+            padding-top: 8rem
+        }
+
+        .text-center {
+            text-align: center
+        }
+
+        .font-mono {
+            font-family: JetBrains Mono, monospace
+        }
+
+        .font-sans {
+            font-family: Inter, sans-serif
+        }
+
+        .text-3xl {
+            font-size: 1.875rem;
+            line-height: 2.25rem
+        }
+
+        .text-5xl {
+            font-size: 3rem;
+            line-height: 1
+        }
+
+        .text-\[10px\] {
+            font-size: 10px
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+            line-height: 1rem
+        }
+
+        .font-bold {
+            font-weight: 700
+        }
+
+        .font-medium {
+            font-weight: 500
+        }
+
+        .font-normal {
+            font-weight: 400
+        }
+
+        .font-semibold {
+            font-weight: 600
+        }
+
+        .uppercase {
+            text-transform: uppercase
+        }
+
+        .italic {
+            font-style: italic
+        }
+
+        .tracking-tight {
+            letter-spacing: -0.025em
+        }
+
+        .tracking-wide {
+            letter-spacing: 0.025em
+        }
+
+        .tracking-wider {
+            letter-spacing: 0.05em
+        }
+
+        .text-black {
+            --tw-text-opacity: 1;
+            color: rgb(0 0 0 / var(--tw-text-opacity, 1))
+        }
+
+        .text-blue-100 {
+            --tw-text-opacity: 1;
+            color: rgb(219 234 254 / var(--tw-text-opacity, 1))
+        }
+
+        .text-blue-200\/80 {
+            color: rgb(191 219 254 / 0.8)
+        }
+
+        .text-blue-300 {
+            --tw-text-opacity: 1;
+            color: rgb(147 197 253 / var(--tw-text-opacity, 1))
+        }
+
+        .text-blue-400 {
+            --tw-text-opacity: 1;
+            color: rgb(96 165 250 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-200 {
+            --tw-text-opacity: 1;
+            color: rgb(229 231 235 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-300 {
+            --tw-text-opacity: 1;
+            color: rgb(209 213 219 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-400 {
+            --tw-text-opacity: 1;
+            color: rgb(156 163 175 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-500 {
+            --tw-text-opacity: 1;
+            color: rgb(107 114 128 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-600 {
+            --tw-text-opacity: 1;
+            color: rgb(75 85 99 / var(--tw-text-opacity, 1))
+        }
+
+        .text-green-400 {
+            --tw-text-opacity: 1;
+            color: rgb(74 222 128 / var(--tw-text-opacity, 1))
+        }
+
+        .text-nvidia {
+            --tw-text-opacity: 1;
+            color: rgb(118 185 0 / var(--tw-text-opacity, 1))
+        }
+
+        .text-orange-300 {
+            --tw-text-opacity: 1;
+            color: rgb(253 186 116 / var(--tw-text-opacity, 1))
+        }
+
+        .text-purple-400 {
+            --tw-text-opacity: 1;
+            color: rgb(192 132 252 / var(--tw-text-opacity, 1))
+        }
+
+        .text-red-500 {
+            --tw-text-opacity: 1;
+            color: rgb(239 68 68 / var(--tw-text-opacity, 1))
+        }
+
+        .text-transparent {
+            color: transparent
+        }
+
+        .text-white {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity, 1))
+        }
+
+        .text-white\/80 {
+            color: rgb(255 255 255 / 0.8)
+        }
+
+        .text-yellow-200 {
+            --tw-text-opacity: 1;
+            color: rgb(254 240 138 / var(--tw-text-opacity, 1))
+        }
+
+        .text-yellow-400 {
+            --tw-text-opacity: 1;
+            color: rgb(250 204 21 / var(--tw-text-opacity, 1))
+        }
+
+        .opacity-0 {
+            opacity: 0
+        }
+
+        .opacity-60 {
+            opacity: 0.6
+        }
+
+        .opacity-80 {
+            opacity: 0.8
+        }
+
+        .mix-blend-overlay {
+            mix-blend-mode: overlay
+        }
+
+        .shadow-2xl {
+            --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+        }
+
+        .shadow-\[0_0_15px_rgba\(250\2c 204\2c 21\2c 0\.5\)\] {
+            --tw-shadow: 0 0 15px rgba(250, 204, 21, 0.5);
+            --tw-shadow-colored: 0 0 15px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+        }
+
+        .blur-3xl {
+            --tw-blur: blur(64px);
+            filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
+        }
+
+        .drop-shadow-lg {
+            --tw-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+            filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
+        }
+
+        .backdrop-blur {
+            --tw-backdrop-blur: blur(8px);
+            -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+            backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)
+        }
+
+        .backdrop-blur-xl {
+            --tw-backdrop-blur: blur(24px);
+            -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+            backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms
+        }
+
+        .transition-colors {
+            transition-property: color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms
+        }
+
+        .transition-opacity {
+            transition-property: opacity;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms
+        }
+
+        .transition-transform {
+            transition-property: transform;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms
+        }
+
+        .delay-150 {
+            transition-delay: 150ms
+        }
+
+        .delay-75 {
+            transition-delay: 75ms
+        }
+
+        .duration-300 {
+            transition-duration: 300ms
+        }
+
+        .duration-500 {
+            transition-duration: 500ms
+        }
+
+        .selection\:bg-nvidia *::selection {
+            --tw-bg-opacity: 1;
+            background-color: rgb(118 185 0 / var(--tw-bg-opacity, 1))
+        }
+
+        .selection\:text-black *::selection {
+            --tw-text-opacity: 1;
+            color: rgb(0 0 0 / var(--tw-text-opacity, 1))
+        }
+
+        .selection\:bg-nvidia::selection {
+            --tw-bg-opacity: 1;
+            background-color: rgb(118 185 0 / var(--tw-bg-opacity, 1))
+        }
+
+        .selection\:text-black::selection {
+            --tw-text-opacity: 1;
+            color: rgb(0 0 0 / var(--tw-text-opacity, 1))
+        }
+
+        .hover\:bg-gray-100:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1))
+        }
+
+        .hover\:bg-nvidia\/10:hover {
+            background-color: rgb(118 185 0 / 0.1)
+        }
+
+        .hover\:bg-white\/10:hover {
+            background-color: rgb(255 255 255 / 0.1)
+        }
+
+        .hover\:text-nvidia:hover {
+            --tw-text-opacity: 1;
+            color: rgb(118 185 0 / var(--tw-text-opacity, 1))
+        }
+
+        .hover\:text-white:hover {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity, 1))
+        }
+
+        .hover\:opacity-90:hover {
+            opacity: 0.9
+        }
+
+        .group:hover .group-hover\:translate-x-1 {
+            --tw-translate-x: 0.25rem;
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+        }
+
+        .group:hover .group-hover\:scale-105 {
+            --tw-scale-x: 1.05;
+            --tw-scale-y: 1.05;
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+        }
+
+        .group:hover .group-hover\:bg-nvidia {
+            --tw-bg-opacity: 1;
+            background-color: rgb(118 185 0 / var(--tw-bg-opacity, 1))
+        }
+
+        .group:hover .group-hover\:text-black {
+            --tw-text-opacity: 1;
+            color: rgb(0 0 0 / var(--tw-text-opacity, 1))
+        }
+
+        .group:hover .group-hover\:text-gray-200 {
+            --tw-text-opacity: 1;
+            color: rgb(229 231 235 / var(--tw-text-opacity, 1))
+        }
+
+        .group:hover .group-hover\:opacity-100 {
+            opacity: 1
+        }
+
+        @media (min-width: 640px) {
+            .sm\:px-6 {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem
+            }
+
+            .sm\:pb-24 {
+                padding-bottom: 6rem
+            }
+
+            .sm\:pt-40 {
+                padding-top: 10rem
+            }
+        }
+
+        @media (min-width: 768px) {
+            .md\:block {
+                display: block
+            }
+
+            .md\:rotate-0 {
+                --tw-rotate: 0deg;
+                transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+            }
+
+            .md\:grid-cols-4 {
+                grid-template-columns: repeat(4, minmax(0, 1fr))
+            }
+
+            .md\:flex-row {
+                flex-direction: row
+            }
+
+            .md\:gap-8 {
+                gap: 2rem
+            }
+
+            .md\:text-4xl {
+                font-size: 2.25rem;
+                line-height: 2.5rem
+            }
+
+            .md\:text-7xl {
+                font-size: 4.5rem;
+                line-height: 1
+            }
+
+            .md\:text-sm {
+                font-size: 0.875rem;
+                line-height: 1.25rem
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .lg\:px-8 {
+                padding-left: 2rem;
+                padding-right: 2rem
+            }
+        }
+    </style>
+    <link type="text/css"
+        href="https://fonts.googleapis.com/css2?family=Google+Symbols:opsz,wght,FILL,GRAD,ROND@24,400,0,0,50&amp;icon_names=link"
+        rel="stylesheet">
+    <style id="dyn-img-link-styles-di-script">
+        .dyn-img-link-wrapper-di-script {
+            anchor-scope: all;
+            display: contents;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dyn-img-link-wrapper-di-script img {
+            anchor-name: --photo;
+            display: block;
+            max-width: 100%;
+        }
+
+        .dyn-img-link-di-script {
+            z-index: 999999;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 9999px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            color: white;
+            height: clamp(13px, calc(max(anchor-size(width), anchor-size(height)) * 0.3), 21px);
+            width: clamp(13px, calc(max(anchor-size(width), anchor-size(height)) * 0.3), 21px);
+            padding: 4px;
+            position: absolute;
+
+            bottom: anchor(bottom);
+            left: anchor(left);
+            margin-left: 10px;
+            margin-bottom: 10px;
+
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .dyn-img-link-di-script:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .dyn-img-link-di-script span {
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        .dyn-img-attribution-button-di-script {
+            z-index: 999999;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 9999px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            color: white;
+            width: clamp(13px, calc(max(anchor-size(width), anchor-size(height)) * 0.3), 21px);
+            height: clamp(13px, calc(max(anchor-size(width), anchor-size(height)) * 0.3), 21px);
+            padding: 4px;
+
+            position: absolute;
+            position-anchor: --photo;
+            top: anchor(top);
+            right: anchor(right);
+            margin-top: 10px;
+            margin-right: 10px;
+
+            transition: background-color 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dyn-img-attribution-button-di-script:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .dyn-img-attribution-button-di-script span {
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        .dyn-img-inline-attribution-di-script {
+            z-index: 999999;
+            font-size: 12px;
+            padding: 4px;
+            display: none;
+
+            position: absolute;
+            position-anchor: --photo;
+            bottom: anchor(bottom);
+            right: anchor(right);
+            margin-bottom: 8px;
+            margin-right: 8px;
+
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: right;
+
+            white-space: nowrap;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 9999px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-dark-900 text-gray-200 font-sans selection:bg-nvidia selection:text-black overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b-0 border-b-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-nvidia">smart_toy</span>
+                    <span class="font-bold text-xl tracking-tight text-white">NitroGen <span
+                            class="text-xs text-gray-400 font-normal border border-gray-700 rounded px-1 ml-1">PAPER
+                            EXPLORER</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#overview"
+                            class="hover:text-nvidia px-3 py-2 rounded-md text-sm font-medium transition-colors">Overview</a>
+                        <a href="#dataset"
+                            class="hover:text-nvidia px-3 py-2 rounded-md text-sm font-medium transition-colors">The
+                            Dataset</a>
+                        <a href="#model"
+                            class="hover:text-nvidia px-3 py-2 rounded-md text-sm font-medium transition-colors">Architecture</a>
+                        <a href="#results"
+                            class="hover:text-nvidia px-3 py-2 rounded-md text-sm font-medium transition-colors">Results</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div id="overview" class="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden">
+        <!-- Background decorative blobs -->
+        <div class="absolute top-0 left-1/2 w-full -translate-x-1/2 h-full z-0 pointer-events-none">
+            <div class="absolute top-20 left-10 w-96 h-96 bg-nvidia/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-nvidia/30 bg-nvidia/10 text-nvidia text-xs font-semibold uppercase tracking-wider mb-6">
+                <span class="w-2 h-2 rounded-full bg-nvidia animate-pulse"></span>
+                New Foundation Model
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+                <span class="gradient-text">NitroGen:</span> <br class="hidden md:block">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-nvidia to-emerald-400">Generalist
+                    Gaming Agents</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-400">
+                Training vision-action models on <strong>40,000 hours</strong> of gameplay across <strong>1,000+
+                    games</strong> using a novel internet-scale data pipeline.
+            </p>
+
+            <div class="mt-10 flex flex-wrap justify-center gap-4">
+                <button onclick="document.getElementById('dataset').scrollIntoView({behavior: 'smooth'})"
+                    class="group relative inline-flex items-center gap-2 px-8 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-100 transition-all">
+                    Explore the Pipeline
+                    <span
+                        class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </button>
+                <a href="https://nitrogen.minedojo.org" target="_blank"
+                    class="inline-flex items-center gap-2 px-8 py-3 bg-white/5 border border-white/10 text-white font-semibold rounded-lg hover:bg-white/10 transition-all">
+                    View Paper PDF
+                    <span class="material-symbols-outlined text-sm">open_in_new</span>
+                </a>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="mt-20 grid grid-cols-2 gap-8 md:grid-cols-4 border-t border-white/10 pt-10">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">40k+</div>
+                    <div class="text-sm text-gray-500 uppercase tracking-wide mt-1">Hours of Video</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">1,000+</div>
+                    <div class="text-sm text-gray-500 uppercase tracking-wide mt-1">Games Supported</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">52%</div>
+                    <div class="text-sm text-gray-500 uppercase tracking-wide mt-1">Fine-tuning Gain</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">Zero-Shot</div>
+                    <div class="text-sm text-gray-500 uppercase tracking-wide mt-1">Generalization</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Big Idea: Data Pipeline -->
+    <div id="dataset" class="py-20 bg-dark-800 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">The "Big Idea": Gamepad Overlays</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Most gaming videos lack action labels. NitroGen solves this by targeting videos where streamers
+                    overlay their controller state, then training a vision model to "watch" the controller.
+                </p>
+            </div>
+
+            <!-- Interactive Pipeline Visualization -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+                <!-- Left: Interactive Explainers -->
+                <div class="space-y-6">
+                    <div class="pipeline-step cursor-pointer group p-6 rounded-xl border border-nvidia/20 bg-nvidia/5 hover:bg-nvidia/10 transition-all active-step border-white/5 bg-white/5"
+                        onclick="setPipelineStep(0)">
+                        <div class="flex items-center gap-4 mb-2">
+                            <div
+                                class="w-8 h-8 rounded-full bg-nvidia flex items-center justify-center text-black font-bold">
+                                1</div>
+                            <h3 class="text-xl font-bold text-white">Raw Video Collection</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm group-hover:text-gray-200">
+                            The system scans YouTube for high-quality gameplay videos that contain a "gamepad overlay"
+                            visual.
+                        </p>
+                    </div>
+
+                    <div class="pipeline-step cursor-pointer group p-6 rounded-xl border hover:bg-white/10 transition-all border-white/5 bg-white/5"
+                        onclick="setPipelineStep(1)">
+                        <div class="flex items-center gap-4 mb-2">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold group-hover:bg-nvidia group-hover:text-black transition-colors">
+                                2</div>
+                            <h3 class="text-xl font-bold text-white">Overlay Extraction</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm group-hover:text-gray-200">
+                            A template matching algorithm identifies the controller's position and crops it from the
+                            frame.
+                        </p>
+                    </div>
+
+                    <div class="pipeline-step cursor-pointer group p-6 rounded-xl border hover:bg-white/10 transition-all border-nvidia/50 bg-nvidia/10"
+                        onclick="setPipelineStep(2)">
+                        <div class="flex items-center gap-4 mb-2">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold group-hover:bg-nvidia group-hover:text-black transition-colors">
+                                3</div>
+                            <h3 class="text-xl font-bold text-white">Action Parsing</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm group-hover:text-gray-200">
+                            A specialized SegFormer model reads the cropped controller to determine which buttons are
+                            pressed in every frame.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right: Visual Simulation -->
+                <div
+                    class="relative w-full aspect-video bg-black rounded-xl overflow-hidden border border-white/20 shadow-2xl">
+                    <!-- The Game Feed (Background) -->
+                    <div class="dyn-img-link-wrapper-di-script" style="border-radius: 0px;"><img
+                            src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcS5mD6Xvj9m2KJPBi-vZlOBzw2rDOmCnTdnXROTK9y_Hzpvdz6FoO3Fx10c37zCVBqgEhb5-sv2zf2JLA4"
+                            go-data-src="/image?query=Rocket+League+gameplay+screenshot&amp;aspect=16:9"
+                            id="pipeline-bg-image"
+                            class="absolute inset-0 w-full h-full object-cover opacity-60 transition-opacity duration-500"
+                            alt="Gameplay" style="transform: scale(1); opacity: 0.3;"><button
+                            class="dyn-img-attribution-button-di-script" title="Image Attribution"
+                            style="display: flex;"><span class="material-symbols-outlined">open_in_full</span></button>
+                    </div>
+
+                    <!-- Step 1: Just Video Label -->
+                    <div id="vis-step-0"
+                        class="absolute inset-0 flex items-center justify-center transition-opacity duration-500"
+                        style="opacity: 0;">
+                        <div
+                            class="bg-black/80 backdrop-blur px-6 py-3 rounded-full border border-white/10 flex items-center gap-3">
+                            <span class="material-symbols-outlined text-red-500 animate-pulse">videocam</span>
+                            <span class="font-mono text-sm">Stream Source: Public Internet</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Bounding Box -->
+                    <div id="vis-step-1" class="absolute inset-0 opacity-0 transition-opacity duration-500"
+                        style="opacity: 0;">
+                        <div
+                            class="absolute bottom-4 left-4 w-32 h-24 border-4 border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.5)] rounded-lg flex items-center justify-center bg-black/40">
+                            <span
+                                class="text-yellow-400 text-xs font-bold bg-black/80 px-1 py-0.5 absolute -top-3 left-0">DETECTED</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Controller Analysis -->
+                    <div id="vis-step-2"
+                        class="absolute inset-0 opacity-0 transition-opacity duration-500 flex items-end justify-start p-4"
+                        style="opacity: 1;">
+                        <div
+                            class="w-48 bg-gray-900/90 p-4 rounded-xl border border-nvidia/50 backdrop-blur-xl transform translate-x-2 -translate-y-2">
+                            <!-- Simulated Controller SVG -->
+                            <div class="relative w-full aspect-[16/9]">
+                                <svg viewBox="0 0 200 120" class="w-full h-full drop-shadow-lg">
+                                    <!-- Body -->
+                                    <path
+                                        d="M40,30 Q10,30 10,80 Q10,110 40,110 L60,110 Q70,110 80,90 L120,90 Q130,110 140,110 L160,110 Q190,110 190,80 Q190,30 160,30 Z"
+                                        fill="#333" stroke="#555" stroke-width="2"></path>
+                                    <!-- Joysticks -->
+                                    <circle cx="60" cy="70" r="12" fill="#1a1a1a" stroke="#444"></circle>
+                                    <circle cx="140" cy="70" r="12" fill="#1a1a1a" stroke="#444"></circle>
+                                    <!-- Stick Inputs (Animated) -->
+                                    <circle id="stick-l" cx="60.76901318338944" cy="61.96705667946557" r="6" fill="#666"
+                                        class="transition-all duration-300"></circle>
+                                    <circle id="stick-r" cx="140" cy="70" r="6" fill="#666"
+                                        class="transition-all duration-300"></circle>
+                                    <!-- Buttons -->
+                                    <circle id="btn-a" cx="170" cy="55" r="4" fill="#222" class="controller-btn">
+                                    </circle>
+                                    <circle id="btn-b" cx="180" cy="45" r="4" fill="#222" class="controller-btn">
+                                    </circle>
+                                    <circle id="btn-x" cx="160" cy="45" r="4" fill="#222" class="controller-btn">
+                                    </circle>
+                                    <circle id="btn-y" cx="170" cy="35" r="4" fill="#222" class="controller-btn">
+                                    </circle>
+                                    <!-- Dpad -->
+                                    <rect x="30" y="40" width="10" height="30" fill="#222" rx="2"></rect>
+                                    <rect x="20" y="50" width="30" height="10" fill="#222" rx="2"></rect>
+                                </svg>
+                                <!-- Neural Net Overlay -->
+                                <div class="absolute inset-0 bg-nvidia/10 mix-blend-overlay animate-pulse rounded-lg">
+                                </div>
+                            </div>
+                            <!-- Data readout -->
+                            <div class="mt-3 font-mono text-[10px] text-nvidia space-y-1">
+                                <div class="flex justify-between"><span>L-STICK:</span> <span id="val-lx">0.1,
+                                        -0.8</span></div>
+                                <div class="flex justify-between"><span>ACTION:</span> <span id="val-btn"
+                                        style="color: rgb(118, 185, 0);">NONE</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Diversity Section -->
+    <div class="py-20 bg-dark-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-10 text-center">Trained on 1,000+ Games</h2>
+
+            <!-- Game Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <div class="group relative aspect-video rounded-xl overflow-hidden cursor-pointer">
+                    <img src="blob:https://17tgs2w3yhusk88br1rulgiobxp4gbaaerbxx40yjohvfyt7fr-h845251650.scf.usercontent.goog/f47dd9a7-fc1d-4654-a29b-70ad92820255"
+                        go-data-src="/image?query=The+Witcher+3+Wild+Hunt+gameplay+screenshot&amp;aspect=16:9"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        alt="Witcher 3" style="">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                        <span class="font-bold">Action RPG</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-video rounded-xl overflow-hidden cursor-pointer">
+                    <div class="dyn-img-link-wrapper-di-script" style="border-radius: 0px;"><img
+                            src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcS5mD6Xvj9m2KJPBi-vZlOBzw2rDOmCnTdnXROTK9y_Hzpvdz6FoO3Fx10c37zCVBqgEhb5-sv2zf2JLA4"
+                            go-data-src="/image?query=Rocket+League+gameplay+screenshot&amp;aspect=16:9"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="Rocket League" style=""><button class="dyn-img-attribution-button-di-script"
+                            title="Image Attribution" style="display: flex;"><span
+                                class="material-symbols-outlined">open_in_full</span></button></div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                        <span class="font-bold">Sports</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-video rounded-xl overflow-hidden cursor-pointer">
+                    <img src="blob:https://17tgs2w3yhusk88br1rulgiobxp4gbaaerbxx40yjohvfyt7fr-h845251650.scf.usercontent.goog/e4f87b40-4fb2-4701-b26c-de8dbdc8cf8b"
+                        go-data-src="/image?query=Cuphead+gameplay+screenshot&amp;aspect=16:9"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        alt="Cuphead" style="">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                        <span class="font-bold">Platformer</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-video rounded-xl overflow-hidden cursor-pointer">
+                    <img src="blob:https://17tgs2w3yhusk88br1rulgiobxp4gbaaerbxx40yjohvfyt7fr-h845251650.scf.usercontent.goog/e468b98b-1a54-4b1a-b81e-91e3c49b7ab4"
+                        go-data-src="/image?query=Nine+Sols+gameplay+screenshot&amp;aspect=16:9"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        alt="Nine Sols" style="">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                        <span class="font-bold">Metroidvania</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Genre Distribution Bar -->
+            <div class="bg-dark-800 p-8 rounded-2xl border border-white/5">
+                <h3 class="text-lg font-semibold mb-6 text-gray-400">Dataset Distribution by Genre</h3>
+                <div class="flex h-12 w-full rounded-full overflow-hidden mb-4">
+                    <div class="bg-blue-600 h-full hover:opacity-90 transition-opacity relative group"
+                        style="width: 35%">
+                        <span
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold">Action-RPG
+                            (35%)</span>
+                        <div
+                            class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-black px-2 py-1 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                            Complex combat &amp; exploration</div>
+                    </div>
+                    <div class="bg-emerald-500 h-full hover:opacity-90 transition-opacity relative group"
+                        style="width: 18%">
+                        <span
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold text-black">Platform
+                            (18%)</span>
+                    </div>
+                    <div class="bg-purple-500 h-full hover:opacity-90 transition-opacity relative group"
+                        style="width: 9%">
+                        <span
+                            class="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold">Adv
+                            (9%)</span>
+                    </div>
+                    <div class="bg-yellow-500 h-full hover:opacity-90 transition-opacity relative group"
+                        style="width: 9%"></div>
+                    <div class="bg-gray-600 h-full hover:opacity-90 transition-opacity relative group flex-1">
+                        <span
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">Others</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4 text-xs text-gray-400 justify-center">
+                    <div class="flex items-center gap-2"><span
+                            class="w-3 h-3 rounded-full bg-blue-600"></span>Action-RPG</div>
+                    <div class="flex items-center gap-2"><span
+                            class="w-3 h-3 rounded-full bg-emerald-500"></span>Platformer</div>
+                    <div class="flex items-center gap-2"><span
+                            class="w-3 h-3 rounded-full bg-purple-500"></span>Action-Adventure</div>
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-yellow-500"></span>Racing
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Architecture Section -->
+    <div id="model" class="py-20 bg-dark-800 border-y border-white/5 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-12 text-center">Vision-Action Architecture</h2>
+
+            <div class="relative">
+                <!-- Architecture Diagram -->
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+
+                    <!-- Input -->
+                    <div class="flex flex-col items-center gap-3">
+                        <div
+                            class="w-32 h-32 bg-gray-900 rounded-lg border border-gray-700 flex items-center justify-center overflow-hidden relative group">
+                            <img src="blob:https://17tgs2w3yhusk88br1rulgiobxp4gbaaerbxx40yjohvfyt7fr-h845251650.scf.usercontent.goog/2adafd96-1c6c-41b2-9867-d0aa2889f916"
+                                go-data-src="/image?query=Hollow+Knight+gameplay+screenshot&amp;aspect=1:1"
+                                class="absolute inset-0 w-full h-full object-cover opacity-80" alt="Input Frame"
+                                style="">
+                            <span class="absolute bottom-2 bg-black/70 px-2 py-1 text-xs rounded font-mono">256x256
+                                RGB</span>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-400">Observation</span>
+                    </div>
+
+                    <!-- Arrow -->
+                    <span class="material-symbols-outlined text-gray-600 rotate-90 md:rotate-0">arrow_forward</span>
+
+                    <!-- Vision Encoder -->
+                    <div
+                        class="glass-panel p-6 rounded-xl flex flex-col items-center w-48 border-t-4 border-t-blue-500">
+                        <span class="material-symbols-outlined text-blue-400 text-3xl mb-2">visibility</span>
+                        <h3 class="font-bold text-white">SigLIP 2</h3>
+                        <p class="text-xs text-center text-gray-400 mt-2">Vision Transformer<br>Encoder</p>
+                    </div>
+
+                    <!-- Arrow + Tokens -->
+                    <div class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-gray-600 rotate-90 md:rotate-0">arrow_forward</span>
+                        <div class="flex gap-1 mt-1">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                            <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse delay-75"></div>
+                            <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse delay-150"></div>
+                        </div>
+                    </div>
+
+                    <!-- Action Model -->
+                    <div class="glass-panel p-6 rounded-xl flex flex-col items-center w-48 border-t-4 border-t-nvidia">
+                        <span class="material-symbols-outlined text-nvidia text-3xl mb-2">neurology</span>
+                        <h3 class="font-bold text-white">Action DiT</h3>
+                        <p class="text-xs text-center text-gray-400 mt-2">Diffusion Transformer<br>Action Head</p>
+                    </div>
+
+                    <!-- Arrow -->
+                    <span class="material-symbols-outlined text-gray-600 rotate-90 md:rotate-0">arrow_forward</span>
+
+                    <!-- Output -->
+                    <div class="flex flex-col items-center gap-3">
+                        <div
+                            class="w-32 h-32 bg-gray-900 rounded-lg border border-gray-700 flex flex-col items-center justify-center p-2 font-mono text-xs text-green-400">
+                            <div class="mb-2 text-white font-bold text-center">Action Chunk (16 steps)</div>
+                            <div>Running: 0.8</div>
+                            <div>Jump: 1.0</div>
+                            <div>Attack: 0.0</div>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-400">Policy Output</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mt-16 bg-blue-500/10 border border-blue-500/20 rounded-lg p-6 max-w-3xl mx-auto">
+                <div class="flex gap-4 items-start">
+                    <span class="material-symbols-outlined text-blue-400 shrink-0">info</span>
+                    <div>
+                        <h4 class="font-bold text-blue-100 mb-1">Why Behavior Cloning?</h4>
+                        <p class="text-sm text-blue-200/80">
+                            Unlike Reinforcement Learning (RL) which requires a specific reward function for every game,
+                            NitroGen uses Behavior Cloning (BC) to imitate human players from the massive video dataset.
+                            This allows it to scale to 1000+ games without needing game-specific code.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results" class="py-20 bg-dark-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-6">Performance &amp; Fine-Tuning</h2>
+            <p class="text-gray-400 max-w-2xl mb-12">
+                NitroGen serves as a "Foundation Model". It can play many games zero-shot, but its real power is how
+                efficiently it adapts to new games compared to training from scratch.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Chart 1: Fine Tuning Benefit -->
+                <div class="glass-panel p-8 rounded-2xl">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-nvidia">trending_up</span>
+                        Improvement via Pre-Training
+                    </h3>
+                    <p class="text-sm text-gray-400 mb-6">Comparison of success rates on a 3D Action-RPG task (30h
+                        training data).</p>
+
+                    <div class="space-y-6">
+                        <!-- Group 1 -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Combat Task</span>
+                                <span class="text-nvidia font-bold">+52% Relative Gain</span>
+                            </div>
+                            <div class="h-8 w-full bg-gray-800 rounded-full overflow-hidden relative flex">
+                                <!-- Base -->
+                                <div class="h-full bg-gray-600 flex items-center justify-end px-2 text-xs font-bold text-white/80"
+                                    style="width: 48%">48% (Scratch)</div>
+                                <!-- Gain -->
+                                <div class="h-full bg-nvidia flex items-center justify-end px-2 text-xs font-bold text-black"
+                                    style="width: 25%">73% (NitroGen)</div>
+                            </div>
+                        </div>
+
+                        <!-- Group 2 -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Navigation Task</span>
+                                <span class="text-nvidia font-bold">+25% Relative Gain</span>
+                            </div>
+                            <div class="h-8 w-full bg-gray-800 rounded-full overflow-hidden relative flex">
+                                <!-- Base -->
+                                <div class="h-full bg-gray-600 flex items-center justify-end px-2 text-xs font-bold text-white/80"
+                                    style="width: 48%">48%</div>
+                                <!-- Gain -->
+                                <div class="h-full bg-nvidia flex items-center justify-end px-2 text-xs font-bold text-black"
+                                    style="width: 12%">60%</div>
+                            </div>
+                        </div>
+
+                        <!-- Group 3 -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Game Specific</span>
+                                <span class="text-nvidia font-bold">+5% Gain</span>
+                            </div>
+                            <div class="h-8 w-full bg-gray-800 rounded-full overflow-hidden relative flex">
+                                <!-- Base -->
+                                <div class="h-full bg-gray-600 flex items-center justify-end px-2 text-xs font-bold text-white/80"
+                                    style="width: 63%">63%</div>
+                                <!-- Gain -->
+                                <div class="h-full bg-nvidia flex items-center justify-end px-2 text-xs font-bold text-black"
+                                    style="width: 3.6%">66.6%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-xs text-gray-500 italic">
+                        * "Scratch" = Randomly initialized model trained on same data amount.<br>
+                        * "NitroGen" = Pre-trained foundation model fine-tuned.
+                    </div>
+                </div>
+
+                <!-- Interactive Universal Simulator Widget -->
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-l-purple-500">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-purple-400">extension</span>
+                        The Universal Simulator
+                    </h3>
+                    <p class="text-gray-400 mb-6 text-sm">
+                        How do you train AI on commercial games like <em>The Witcher 3</em> without source code access?
+                    </p>
+
+                    <div class="bg-black/50 p-6 rounded-xl border border-white/10 relative overflow-hidden">
+                        <div class="absolute top-2 right-2 text-xs text-gray-600 font-mono">SIMULATION.PY</div>
+
+                        <div class="space-y-4 font-mono text-xs md:text-sm">
+                            <div class="flex gap-2">
+                                <span class="text-purple-400">def</span> <span
+                                    class="text-yellow-200">step</span>(action):
+                            </div>
+                            <div class="pl-4 text-gray-400">
+                                # 1. Send virtual input
+                            </div>
+                            <div class="pl-4">
+                                <span class="text-blue-300">system</span>.send_input(action)
+                            </div>
+                            <div class="pl-4 text-gray-400">
+                                # 2. Advance game clock exactly 1 frame
+                            </div>
+                            <div class="pl-4 bg-purple-500/20 -mx-4 px-4 py-1 border-l-2 border-purple-500">
+                                <span class="text-blue-300">hook</span>.tick_game_engine(delta=<span
+                                    class="text-orange-300">0.016</span>)
+                            </div>
+                            <div class="pl-4 text-gray-400">
+                                # 3. Capture screen
+                            </div>
+                            <div class="pl-4">
+                                <span class="text-purple-400">return</span> <span
+                                    class="text-blue-300">screen</span>.capture()
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex gap-3 text-sm text-gray-300">
+                        <span class="material-symbols-outlined text-yellow-400">lightbulb</span>
+                        <p>By intercepting the system clock, NitroGen can run commercial games frame-by-frame, turning
+                            them into RL environments.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 py-12">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <span class="font-bold text-xl tracking-tight text-white">NitroGen</span>
+                <p class="text-gray-500 text-sm mt-1">Based on the paper "NitroGen: An Open Foundation Model for
+                    Generalist Gaming Agents" (2025)</p>
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">Project Page</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">ArXiv</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Pipeline Animation Logic
+        let simulationInterval;
+        const lxEl = document.getElementById('val-lx');
+        const btnEl = document.getElementById('val-btn');
+        const stickL = document.getElementById('stick-l');
+        const stickR = document.getElementById('stick-r');
+        const buttons = ['btn-a', 'btn-b', 'btn-x', 'btn-y'];
+        const actions = ['JUMP', 'ATTACK', 'DASH', 'INTERACT'];
+
+        function startSimulation() {
+            if (simulationInterval) clearInterval(simulationInterval);
+
+            simulationInterval = setInterval(() => {
+                // Random Stick Movement
+                const x = (Math.random() * 20 - 10);
+                const y = (Math.random() * 20 - 10);
+                stickL.setAttribute('cx', 60 + x);
+                stickL.setAttribute('cy', 70 + y);
+                lxEl.innerText = `${(x / 10).toFixed(1)}, ${(y / 10).toFixed(1)}`;
+
+                // Random Button Press
+                if (Math.random() > 0.7) {
+                    const btnIdx = Math.floor(Math.random() * buttons.length);
+                    const btnId = buttons[btnIdx];
+                    const btn = document.getElementById(btnId);
+
+                    // Visual feedback
+                    btn.classList.add('active');
+                    btnEl.innerText = actions[btnIdx];
+                    btnEl.style.color = '#76B900';
+
+                    setTimeout(() => {
+                        btn.classList.remove('active');
+                        btnEl.innerText = 'NONE';
+                        btnEl.style.color = '#76B900';
+                    }, 200);
+                }
+            }, 500);
+        }
+
+        function setPipelineStep(step) {
+            // Update UI buttons
+            const buttons = document.querySelectorAll('.pipeline-step');
+            buttons.forEach((btn, idx) => {
+                if (idx === step) {
+                    btn.classList.add('border-nvidia/50', 'bg-nvidia/10');
+                    btn.classList.remove('border-white/5', 'bg-white/5');
+                } else {
+                    btn.classList.remove('border-nvidia/50', 'bg-nvidia/10');
+                    btn.classList.add('border-white/5', 'bg-white/5');
+                }
+            });
+
+            // Update Visualization
+            const bgImage = document.getElementById('pipeline-bg-image');
+            const step0 = document.getElementById('vis-step-0');
+            const step1 = document.getElementById('vis-step-1');
+            const step2 = document.getElementById('vis-step-2');
+
+            // Reset
+            step0.style.opacity = '0';
+            step1.style.opacity = '0';
+            step2.style.opacity = '0';
+            bgImage.style.transform = 'scale(1)';
+
+            if (step === 0) {
+                step0.style.opacity = '1';
+                bgImage.style.opacity = '0.6';
+                clearInterval(simulationInterval);
+            } else if (step === 1) {
+                step1.style.opacity = '1';
+                bgImage.style.opacity = '0.8';
+                bgImage.style.transform = 'scale(1.1)'; // Slight zoom to focus
+                clearInterval(simulationInterval);
+            } else if (step === 2) {
+                step2.style.opacity = '1';
+                bgImage.style.opacity = '0.3'; // Dim background to focus on controller
+                startSimulation();
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            startSimulation();
+        });
+    </script>
+    <!--
+    "/image?query=Rocket+League+gameplay+screenshot&aspect=16:9"
+    "/image?query=The+Witcher+3+Wild+Hunt+gameplay+screenshot&aspect=16:9"
+    "/image?query=Cuphead+gameplay+screenshot&aspect=16:9"
+    "/image?query=Nine+Sols+gameplay+screenshot&aspect=16:9"
+    "/image?query=Hollow+Knight+gameplay+screenshot&aspect=1:1"
+    -->
+
+
+</body>
+
+</html>
